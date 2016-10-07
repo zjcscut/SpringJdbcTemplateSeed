@@ -6,8 +6,9 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import static org.junit.Assert.*;
 
 /**
@@ -16,7 +17,7 @@ import static org.junit.Assert.*;
  * @function
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(Application.class)
+@SpringBootTest(classes = {Application.class})
 public class TestScope {
 
     private Logger log = LoggerFactory.getLogger(TestScope.class);
@@ -26,7 +27,7 @@ public class TestScope {
 
     @Test
     public void findAllUsers(){
-        assertEquals(6, userRepository.findAll().size());
+        assertEquals(1, userRepository.findAll().size());
         log.error("List<User> size:{}" ,userRepository.findAll().size());
     }
 }
