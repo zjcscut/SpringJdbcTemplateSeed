@@ -11,3 +11,5 @@ target/
 out/
 .idea/
 logs/
+src/main/java/cn/zjc/controller/
+src/main/java/cn/zjc/service/
