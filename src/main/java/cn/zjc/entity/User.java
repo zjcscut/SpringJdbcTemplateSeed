@@ -1,5 +1,7 @@
 package cn.zjc.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * @author zhangjinci
  * @version 2016/10/7 17:36
@@ -9,6 +11,7 @@ public class User {
 
     private Integer id;
     private String name;
+    @JSONField(serialize = false)
     private Integer age;
 
     public User() {

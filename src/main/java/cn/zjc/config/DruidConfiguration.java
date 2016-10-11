@@ -4,6 +4,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,37 @@ public class DruidConfiguration {
 	@Autowired
 	private Environment environment; //注入配置环境
 
+	@Autowired
+	private DruidBasicConfig druidBasicConfig; //注入Druid基础配置
+
+	//Druid数据源基础配置
+	private void basicDruidConfig(DruidDataSource dataSource){
+		dataSource.setInitialSize(druidBasicConfig.getInitialSize());
+		dataSource.setMaxActive(druidBasicConfig.getMaxActive());
+		dataSource.setMinIdle(druidBasicConfig.getMinIdle());
+		dataSource.setMaxWait(druidBasicConfig.getMaxWait());
+		dataSource.setMinEvictableIdleTimeMillis(druidBasicConfig.getMinEvictableIdleTimeMillis());
+		dataSource.setValidationQuery(druidBasicConfig.getValidationQuery());
+		dataSource.setTestWhileIdle(druidBasicConfig.getTestWhileIdle());
+		dataSource.setTestOnBorrow(druidBasicConfig.getTestOnBorrow());
+		dataSource.setPoolPreparedStatements(druidBasicConfig.getPoolPreparedStatements());
+		dataSource.setMaxPoolPreparedStatementPerConnectionSize(druidBasicConfig.getMaxPoolPreparedStatementPerConnectionSize());
+		try {
+			dataSource.setFilters(druidBasicConfig.getFilters());
+		} catch (SQLException e) {
+			throw new RuntimeException("set druid filters fail:" + e.getMessage());
+		}
+		dataSource.setRemoveAbandoned(druidBasicConfig.getRemoveAbandoned());
+		dataSource.setRemoveAbandonedTimeout(druidBasicConfig.getRemoveAbandonedTimeout());
+	}
+
+    //主数据源
+	@Bean(name = "primaryDataSource")
+	@Qualifier("primaryDataSource")
+	public DataSource primaryDataSource(){
+
+	}
+
 	//配置Druid数据源
 	@Bean
 	public DataSource dataSource() {
@@ -33,24 +65,7 @@ public class DruidConfiguration {
 		dataSource.setDriverClassName(environment.getProperty("spring.datasource.driver-class-name"));
 		dataSource.setUsername(environment.getProperty("spring.datasource.username"));//用户名
 		dataSource.setPassword(environment.getProperty("spring.datasource.password"));//密码
-		dataSource.setInitialSize(5);
-		dataSource.setMaxActive(20);
-		dataSource.setMinIdle(3);
-		dataSource.setMaxWait(60000);
-		dataSource.setMinEvictableIdleTimeMillis(300000);
-		dataSource.setValidationQuery("SELECT 1");
-		dataSource.setTestWhileIdle(true);
-		dataSource.setTestOnBorrow(false);
-		dataSource.setTestWhileIdle(false);
-		dataSource.setPoolPreparedStatements(true);
-		dataSource.setMaxPoolPreparedStatementPerConnectionSize(50);
-		try {
-			dataSource.setFilters("stat");
-		} catch (SQLException e) {
-			throw new RuntimeException("set druid filters fail:" + e.getMessage());
-		}
-		dataSource.setRemoveAbandoned(true);
-		dataSource.setRemoveAbandonedTimeout(1800);
+		basicDruidConfig(dataSource);
 		return dataSource;
 	}
 
@@ -60,15 +75,15 @@ public class DruidConfiguration {
 	@Bean
 	public ServletRegistrationBean DruidServlet() {
 		ServletRegistrationBean servletRegistrationBean
-				= new ServletRegistrationBean(new StatViewServlet(),"/druid/*"); //添加一个Servlet
+				= new ServletRegistrationBean(new StatViewServlet(),environment.getProperty("spring.druid.stat.url")); //添加一个Servlet
 		//添加初始化参数：initParams
 		//添加白名单
-		servletRegistrationBean.addInitParameter("allow", "localhost");
+		servletRegistrationBean.addInitParameter("allow", environment.getProperty("spring.druid.stat.url"));
 		//添加黑名单(优先于白名单)
-		servletRegistrationBean.addInitParameter("deny", "192.168.1.1");
+		servletRegistrationBean.addInitParameter("deny", environment.getProperty("spring.druid.stat.deny"));
 		//登录查看信息的账号密码
-		servletRegistrationBean.addInitParameter("loginUsername", "admin");  //Druid后台登录账号
-		servletRegistrationBean.addInitParameter("loginPassword", "123456"); //Druid后台登录密码
+		servletRegistrationBean.addInitParameter("loginUsername", environment.getProperty("spring.druid.stat.loginUsername"));  //Druid后台登录账号
+		servletRegistrationBean.addInitParameter("loginPassword", environment.getProperty("spring.druid.stat.loginPassword")); //Druid后台登录密码
 		//是否能够重置数据
 		servletRegistrationBean.addInitParameter("resetEnable", "false");
 		return servletRegistrationBean;
@@ -81,9 +96,9 @@ public class DruidConfiguration {
 		FilterRegistrationBean filterRegistrationBean
 				= new FilterRegistrationBean(new WebStatFilter());
 		//Url匹配规则
-		filterRegistrationBean.addUrlPatterns("/*");
+		filterRegistrationBean.addUrlPatterns(environment.getProperty("spring.druid.webfilter.url"));
 		//忽略的资源文件
-		filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*");
+		filterRegistrationBean.addInitParameter("exclusions", environment.getProperty("spring.druid.webfilter.exclusions"));
 		return filterRegistrationBean;
 	}
 }
