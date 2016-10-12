@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author zhangjinci
  * @version 2016/10/10 14:37
- * @function
+ * @function Druid数据源基础配置
  */
 @Component
 @ConfigurationProperties(prefix = "spring.druid")

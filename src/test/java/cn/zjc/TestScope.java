@@ -1,5 +1,8 @@
 package cn.zjc;
 
+import cn.zjc.config.DataSourceContextHolder;
+import cn.zjc.config.DataSourceType;
+import cn.zjc.config.TargetDataSource;
 import cn.zjc.dao.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.junit.Assert.*;
@@ -25,9 +29,27 @@ public class TestScope {
     @Autowired
     private UserRepository userRepository;
 
+//    @Test
+//    public void findAllUsers(){
+//        assertEquals(1, userRepository.findAll().size());
+//        log.error("List<User> size:{}" ,userRepository.findAll().size());
+//    }
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     @Test
-    public void findAllUsers(){
-        assertEquals(1, userRepository.findAll().size());
-        log.error("List<User> size:{}" ,userRepository.findAll().size());
+    @TargetDataSource(value = DataSourceType.MASTER)
+    public void findAllUsers() {
+        Integer c = jdbcTemplate.queryForObject("Select count(*) from user", Integer.class);
+        System.out.println("user count==> " + c);
+    }
+
+    @Test
+    @TargetDataSource(value = DataSourceType.SLAVER)
+    public void findAllUsersFromJdbc() {
+        DataSourceContextHolder.setDataSourceType(DataSourceType.SLAVER);
+        Integer c = jdbcTemplate.queryForObject("Select count(*) from user", Integer.class);
+        System.out.println("user count==> " + c);
     }
 }
