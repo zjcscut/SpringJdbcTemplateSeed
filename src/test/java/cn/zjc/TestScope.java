@@ -4,6 +4,7 @@ import cn.zjc.config.DataSourceContextHolder;
 import cn.zjc.config.DataSourceType;
 import cn.zjc.config.TargetDataSource;
 import cn.zjc.dao.UserRepository;
+import cn.zjc.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -52,4 +53,19 @@ public class TestScope {
         Integer c = jdbcTemplate.queryForObject("Select count(*) from user", Integer.class);
         System.out.println("user count==> " + c);
     }
+
+
+    @Autowired
+    private UserService userService;
+
+    @Test
+    public void testMaster() throws Exception{
+       assertTrue(6 == userService.selectAllCount());
+    }
+
+    @Test
+    public void testSlaver()throws  Exception{
+        assertTrue(1 == userService.selectAllCountFromSlaver());
+    }
+
 }

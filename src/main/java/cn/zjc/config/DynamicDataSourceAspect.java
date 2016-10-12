@@ -24,7 +24,7 @@ public class DynamicDataSourceAspect {
 
     @Before("point()")
     public void setDataSourceContext(JoinPoint joinPoint) {
-        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature(); //获取方法签名
         if (methodSignature != null) {
             Method method = methodSignature.getMethod();
             if (method != null) {
