@@ -18,23 +18,22 @@ import java.lang.reflect.Method;
 @Component
 public class DynamicDataSourceAspect {
 
-    @Pointcut("@annotation(cn.zjc.config.TargetDataSource)")
-    public void point() {
-    }
+	@Pointcut("@annotation(cn.zjc.config.TargetDataSource)")
+	public void point() {
+	}
 
-    @Before("point()")
-    public void setDataSourceContext(JoinPoint joinPoint) {
-        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature(); //获取方法签名
-        if (methodSignature != null) {
-            Method method = methodSignature.getMethod();
-            if (method != null) {
-                if (method.isAnnotationPresent(TargetDataSource.class)) {  //出现过此注解
-                    TargetDataSource targetDataSource = method.getDeclaredAnnotation(TargetDataSource.class);
-                    DataSourceContextHolder.setDataSourceType(targetDataSource.value());
-                }
-            }
-        }
-    }
+	@Before("point()")
+	public void setDataSourceContext(JoinPoint joinPoint) {
+		MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature(); //获取方法签名
+		if (methodSignature != null) {
+			Method method = methodSignature.getMethod();
+			if (method != null && method.isAnnotationPresent(TargetDataSource.class)) {     //出现过此注解
+				TargetDataSource targetDataSource = method.getDeclaredAnnotation(TargetDataSource.class);
+				DataSourceContextHolder.setDataSourceType(targetDataSource.value());
+
+			}
+		}
+	}
 
 
 }

@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * @author zhangjinci
  * @version 2016/10/12 18:10
- * @function 数据源类型注解
+ * @function 数据源类型注解,方法级别注解
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
