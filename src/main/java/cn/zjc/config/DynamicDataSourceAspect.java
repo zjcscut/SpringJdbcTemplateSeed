@@ -27,11 +27,9 @@ public class DynamicDataSourceAspect {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature(); //获取方法签名
         if (methodSignature != null) {
             Method method = methodSignature.getMethod();
-            if (method != null) {
-                if (method.isAnnotationPresent(TargetDataSource.class)) {  //出现过此注解
-                    TargetDataSource targetDataSource = method.getDeclaredAnnotation(TargetDataSource.class);
-                    DataSourceContextHolder.setDataSourceType(targetDataSource.value());
-                }
+            if (method != null && method.isAnnotationPresent(TargetDataSource.class)) {
+                TargetDataSource targetDataSource = method.getDeclaredAnnotation(TargetDataSource.class);
+                DataSourceContextHolder.setDataSourceType(targetDataSource.value());
             }
         }
     }
