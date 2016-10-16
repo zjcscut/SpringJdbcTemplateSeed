@@ -7,6 +7,8 @@ import cn.zjc.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,4 +39,15 @@ public class UserService {
     public Integer selectAllCountFromSlaver() { //使用从数据源
         return jdbcTemplate.queryForObject("Select count(*) from user", Integer.class);
     }
+
+
+    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
+	public void testTransaction(){
+        jdbcTemplate.update("INSERT INTO user(name,age) VALUES (?,?)",new Object[]{"zjc","100"});
+
+		int s = 1/0;
+		Integer count = jdbcTemplate.queryForObject("Select count(*) from user", Integer.class);
+
+		System.out.println(count);
+	}
 }

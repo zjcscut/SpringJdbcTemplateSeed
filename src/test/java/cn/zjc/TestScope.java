@@ -68,4 +68,9 @@ public class TestScope {
         assertTrue(1 == userService.selectAllCountFromSlaver());
     }
 
+    @Test
+	public void testTransaction()throws Exception{
+		userService.testTransaction();
+	}
+
 }

@@ -18,6 +18,7 @@ import java.lang.reflect.Method;
 @Component
 public class DynamicDataSourceAspect {
 
+	//匹配所有被@TargetDataSource标注的执行中的方法
     @Pointcut("@annotation(cn.zjc.config.TargetDataSource)")
     public void point() {
     }
@@ -29,7 +30,7 @@ public class DynamicDataSourceAspect {
             Method method = methodSignature.getMethod();
             if (method != null && method.isAnnotationPresent(TargetDataSource.class)) {
                 TargetDataSource targetDataSource = method.getDeclaredAnnotation(TargetDataSource.class);
-                DataSourceContextHolder.setDataSourceType(targetDataSource.value());
+                DataSourceContextHolder.setDataSourceType(targetDataSource.value()); //切换数据源类型
             }
         }
     }
