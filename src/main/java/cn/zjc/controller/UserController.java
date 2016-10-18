@@ -4,7 +4,9 @@ import cn.zjc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author zhangjinci
@@ -18,9 +20,11 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/index")
-    public String index(ModelMap modelMap) {
+    public String index(@RequestParam("id") String id, ModelMap modelMap) {
         modelMap.put("users", userService.selectAll());
-        return "index";
+		String s = id;
+		System.out.println("ssss==>" + s);
+		return "index";
     }
 
 

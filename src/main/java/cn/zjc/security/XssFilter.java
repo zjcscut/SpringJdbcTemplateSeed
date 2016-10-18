@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * @author zjc
  * @version 2016/10/17 23:16
- * @description Xss过滤器,可处理multipart请求
+ * @description Xss过滤器, 可处理multipart请求
  */
 public class XssFilter extends OncePerRequestFilter {
 
@@ -44,6 +44,9 @@ public class XssFilter extends OncePerRequestFilter {
 		if (!isBlank(encoding)) {
 			httpServletRequest.setCharacterEncoding(encoding);
 			httpServletResponse.setCharacterEncoding(encoding);
+		} else {
+			httpServletRequest.setCharacterEncoding(StandardCharsets.UTF_8.name());
+			httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		}
 		boolean multipartRequestParsed = false;
 		HttpServletRequest request = new XssHttpServletRequestWrapper(httpServletRequest);
