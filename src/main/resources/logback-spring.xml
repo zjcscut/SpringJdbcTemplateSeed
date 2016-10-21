@@ -63,7 +63,7 @@
     </appender>
 
 
-    <root level="DEBUG">
+    <root level="ERROR">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="ERROR-OUT" />
         <appender-ref ref="DEBUG-OUT" />

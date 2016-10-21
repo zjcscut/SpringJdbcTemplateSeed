@@ -4,7 +4,9 @@ import cn.zjc.config.DataSourceContextHolder;
 import cn.zjc.config.DataSourceType;
 import cn.zjc.config.TargetDataSource;
 import cn.zjc.dao.UserRepository;
+import cn.zjc.service.EventBusService;
 import cn.zjc.service.UserService;
+import com.google.common.eventbus.EventBus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -29,6 +31,9 @@ public class TestScope {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private EventBusService eventBusService;
 
 //    @Test
 //    public void findAllUsers(){
@@ -59,18 +64,29 @@ public class TestScope {
     private UserService userService;
 
     @Test
-    public void testMaster() throws Exception{
-       assertTrue(6 == userService.selectAllCount());
+    public void testMaster() throws Exception {
+        assertTrue(6 == userService.selectAllCount());
     }
 
     @Test
-    public void testSlaver()throws  Exception{
+    public void testSlaver() throws Exception {
         assertTrue(1 == userService.selectAllCountFromSlaver());
     }
 
     @Test
-	public void testTransaction()throws Exception{
-		userService.testTransaction();
-	}
+    public void testTransaction() throws Exception {
+        userService.testTransaction();
+    }
+
+    @Test
+    public void testEventBusService() throws Exception {
+//        eventBusService.addEventBus("z_eventbus", "cn.zjc.eventbus.listerner.StrMessageListerner", 1);
+
+        EventBus eventBus = eventBusService.getInstance("z_eventbus");
+
+        eventBus.post("hello world!");
+
+        System.in.read();
+    }
 
 }

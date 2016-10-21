@@ -31,11 +31,13 @@ public class UserService {
     private JdbcTemplate jdbcTemplate;
 
     @TargetDataSource(value = DataSourceType.MASTER) //使用主数据源
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
     public Integer selectAllCount() {
         return jdbcTemplate.queryForObject("Select count(*) from user", Integer.class);
     }
     
     @TargetDataSource(value = DataSourceType.SLAVER)
+    @Transactional(propagation = Propagation.REQUIRED)
     public Integer selectAllCountFromSlaver() { //使用从数据源
         return jdbcTemplate.queryForObject("Select count(*) from user", Integer.class);
     }

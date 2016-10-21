@@ -10,9 +10,9 @@ import java.util.Date;
 public class EventBusDef {
 
 	private Integer id;
-	private String eventBusName;
+	private String eventBusName; //需要做唯一索引
 	private String eventName;
-	private String listernerClassName;
+	private String listernerClassName; //需要做唯一索引
 	private Integer isAvailable;
 	private Integer isAsync;
 	private String  memo;

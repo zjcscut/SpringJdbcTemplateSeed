@@ -24,6 +24,6 @@ public class EventBusDefRowMapper implements RowMapper<EventBusDef> {
 		def.setIsAsync(resultSet.getInt("IS_ASYNC"));
 		def.setIsAvailable(resultSet.getInt("IS_AVAILABLE"));
 		def.setListernerClassName(resultSet.getString("LISTERNER_CLASS_NAME"));
-		return null;
+		return def;
 	}
 }
