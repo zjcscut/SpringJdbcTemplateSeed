@@ -30,7 +30,6 @@ import java.util.concurrent.Executors;
  * @description 消息总线服务类
  */
 @Service
-@ConditionalOnBean(value = StrMessageListerner.class)
 public class EventBusService implements InitializingBean, DisposableBean {
 
     @Autowired

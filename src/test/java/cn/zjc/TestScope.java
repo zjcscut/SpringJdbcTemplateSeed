@@ -5,6 +5,7 @@ import cn.zjc.config.DataSourceType;
 import cn.zjc.config.TargetDataSource;
 import cn.zjc.dao.UserRepository;
 import cn.zjc.service.EventBusService;
+import cn.zjc.service.RabbitMQService;
 import cn.zjc.service.UserService;
 import com.google.common.eventbus.EventBus;
 import org.junit.Test;
@@ -27,13 +28,16 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = {Application.class})
 public class TestScope {
 
-    private Logger log = LoggerFactory.getLogger(TestScope.class);
+	private Logger log = LoggerFactory.getLogger(TestScope.class);
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    @Autowired
-    private EventBusService eventBusService;
+//	@Autowired
+//	private EventBusService eventBusService;
+
+	@Autowired
+	private RabbitMQService rabbitMQService;
 
 //    @Test
 //    public void findAllUsers(){
@@ -41,52 +45,63 @@ public class TestScope {
 //        log.error("List<User> size:{}" ,userRepository.findAll().size());
 //    }
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
-    @Test
-    @TargetDataSource(value = DataSourceType.MASTER)
-    public void findAllUsers() {
-        Integer c = jdbcTemplate.queryForObject("Select count(*) from user", Integer.class);
-        System.out.println("user count==> " + c);
-    }
+	@Test
+	@TargetDataSource(value = DataSourceType.MASTER)
+	public void findAllUsers() {
+		Integer c = jdbcTemplate.queryForObject("Select count(*) from user", Integer.class);
+		System.out.println("user count==> " + c);
+	}
 
-    @Test
-    @TargetDataSource(value = DataSourceType.SLAVER)
-    public void findAllUsersFromJdbc() {
-        DataSourceContextHolder.setDataSourceType(DataSourceType.SLAVER);
-        Integer c = jdbcTemplate.queryForObject("Select count(*) from user", Integer.class);
-        System.out.println("user count==> " + c);
-    }
+	@Test
+	@TargetDataSource(value = DataSourceType.SLAVER)
+	public void findAllUsersFromJdbc() {
+		DataSourceContextHolder.setDataSourceType(DataSourceType.SLAVER);
+		Integer c = jdbcTemplate.queryForObject("Select count(*) from user", Integer.class);
+		System.out.println("user count==> " + c);
+	}
 
 
-    @Autowired
-    private UserService userService;
+	@Autowired
+	private UserService userService;
 
-    @Test
-    public void testMaster() throws Exception {
-        assertTrue(6 == userService.selectAllCount());
-    }
+	@Test
+	public void testMaster() throws Exception {
+		assertTrue(6 == userService.selectAllCount());
+	}
 
-    @Test
-    public void testSlaver() throws Exception {
-        assertTrue(1 == userService.selectAllCountFromSlaver());
-    }
+	@Test
+	public void testSlaver() throws Exception {
+		assertTrue(1 == userService.selectAllCountFromSlaver());
+	}
 
-    @Test
-    public void testTransaction() throws Exception {
-        userService.testTransaction();
-    }
+	@Test
+	public void testTransaction() throws Exception {
+		userService.testTransaction();
+	}
 
-    @Test
-    public void testEventBusService() throws Exception {
-//        eventBusService.addEventBus("z_eventbus", "cn.zjc.eventbus.listerner.StrMessageListerner", 1);
+//	@Test
+//	public void testEventBusService() throws Exception {
+////        eventBusService.addEventBus("z_eventbus", "cn.zjc.eventbus.listerner.StrMessageListerner", 1);
+//
+//		EventBus eventBus = eventBusService.getInstance("z_eventbus");
+//
+//		eventBus.post("hello world!");
+//
+//		System.in.read();
+//	}
 
-        EventBus eventBus = eventBusService.getInstance("z_eventbus");
-
-        eventBus.post("hello world!");
-
-        System.in.read();
-    }
+	@Test
+	public void testRabbitMQ() throws Exception {
+		rabbitMQService.sendMessage();
+		try {
+			Thread.sleep(5000);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.in.read();
+	}
 
 }
