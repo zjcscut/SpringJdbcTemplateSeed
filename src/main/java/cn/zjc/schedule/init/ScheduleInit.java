@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author zhangjinci
  * @version 2016/10/24 11:52
- * @function
+ * @function 调度初始化
  */
 @Component
 public class ScheduleInit implements InitializingBean {
