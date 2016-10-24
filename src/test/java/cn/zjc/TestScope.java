@@ -7,6 +7,7 @@ import cn.zjc.dao.UserRepository;
 import cn.zjc.service.EventBusService;
 import cn.zjc.service.RabbitMQService;
 import cn.zjc.service.UserService;
+import cn.zjc.utils.SpringContextsUtil;
 import com.google.common.eventbus.EventBus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,8 +34,8 @@ public class TestScope {
 	@Autowired
 	private UserRepository userRepository;
 
-//	@Autowired
-//	private EventBusService eventBusService;
+	@Autowired
+	private EventBusService eventBusService;
 
 	@Autowired
 	private RabbitMQService rabbitMQService;
@@ -82,16 +83,16 @@ public class TestScope {
 		userService.testTransaction();
 	}
 
-//	@Test
-//	public void testEventBusService() throws Exception {
-////        eventBusService.addEventBus("z_eventbus", "cn.zjc.eventbus.listerner.StrMessageListerner", 1);
-//
-//		EventBus eventBus = eventBusService.getInstance("z_eventbus");
-//
-//		eventBus.post("hello world!");
-//
-//		System.in.read();
-//	}
+	@Test
+	public void testEventBusService() throws Exception {
+//        eventBusService.addEventBus("z_eventbus", "cn.zjc.eventbus.listerner.StrMessageListerner", 1);
+
+		EventBus eventBus = eventBusService.getInstance("z_eventbus");
+
+		eventBus.post("hello world!");
+
+		System.in.read();
+	}
 
 	@Test
 	public void testRabbitMQ() throws Exception {
@@ -102,6 +103,12 @@ public class TestScope {
 			e.printStackTrace();
 		}
 		System.in.read();
+	}
+
+	@Test
+	public void testApplicationContextUtils()throws Exception{
+		Object o = SpringContextsUtil.getBean("strMessageListerner");
+		System.out.println(o);
 	}
 
 }

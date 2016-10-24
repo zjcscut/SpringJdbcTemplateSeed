@@ -4,12 +4,14 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 /**
  * @author zjc
  * @version 2016/10/21 0:57
  * @description Spring应用上下文环境工具类
  */
+@Component
 public class SpringContextsUtil implements ApplicationContextAware {
 
 
@@ -49,7 +51,7 @@ public class SpringContextsUtil implements ApplicationContextAware {
 	 * @return Object 一个以所给名字注册的bean的实例
 	 * @throws BeansException
 	 */
-	public  static Object getBean(String name) throws BeansException {
+	public static Object getBean(String name) throws BeansException {
 		return applicationContext.getBean(name);
 	}
 

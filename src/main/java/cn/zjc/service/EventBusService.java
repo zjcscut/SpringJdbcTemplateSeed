@@ -78,6 +78,7 @@ public class EventBusService implements InitializingBean, DisposableBean {
             try {
                 clazz = Class.forName(listerner);
                 eventBus.register(clazz.newInstance());  //这里只需要传入class的实例,不一定需要Spring的构件
+//                eventBus.register(SpringContextsUtil.getBean("strMessageListerner")); //这里应该是Bean的初始化顺序导致这个获取Bean为null的问题
             } catch (Exception e) {
                 log.error(String.format("EventBus配置失败,配置失败的监听器为:%s", listerner));
             }
@@ -114,8 +115,10 @@ public class EventBusService implements InitializingBean, DisposableBean {
             newEventBus = new EventBus();
         }
         eventBusMap.put(eventBusName, newEventBus);
+        Class<?> clazz = null;
         try {
-            newEventBus.register(SpringContextsUtil.getBean(Class.forName(listernerName)));
+            clazz = Class.forName(listernerName);
+            newEventBus.register(clazz.newInstance());
         } catch (Exception e) {
             log.error("register eventbus failed,eventbusName:{},listernerName:{}", eventBusName, listernerName);
         }
