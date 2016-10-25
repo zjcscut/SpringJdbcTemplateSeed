@@ -38,7 +38,7 @@ public class ScheduleListerner implements JobListener {
 		Long taskId = (Long) jobExecutionContext.getMergedJobDataMap().get(ScheduleJob.JOB_PARAM_KEY);
 		Assert.notNull(taskId, "taskId must not be null,id:%d", taskId);
 		ScheduleRecord scheduleRecord = new ScheduleRecord(
-				taskId, jobExecutionContext.getFireInstanceId(), new Date(), null);
+				taskId, jobExecutionContext.getFireInstanceId(), new Date(), null, null);
 		scheduleRecordDao.save(scheduleRecord);
 	}
 
@@ -49,7 +49,7 @@ public class ScheduleListerner implements JobListener {
 
 	@Override
 	public void jobWasExecuted(JobExecutionContext jobExecutionContext, JobExecutionException e) {
-		Integer taskId = (Integer) jobExecutionContext.getMergedJobDataMap().get(ScheduleJob.JOB_PARAM_KEY);
+		Long taskId = (Long) jobExecutionContext.getMergedJobDataMap().get(ScheduleJob.JOB_PARAM_KEY);
 		Assert.notNull(taskId, "taskId must not be null,id:%d", taskId);
 		try {
 			ScheduleRecord record = scheduleRecordDao.queryByTaskId(taskId);

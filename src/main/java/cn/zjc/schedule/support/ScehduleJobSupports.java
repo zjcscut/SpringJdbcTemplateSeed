@@ -115,7 +115,7 @@ public class ScehduleJobSupports {
                         .withSchedule(scheduleBuilder).build();
                 Scheduler scheduler = schedulerFactoryBean.getScheduler();
                 Assert.notNull(scheduler);
-                if (runType == 0) { //自动任务,则让其加入
+                if (runType == 1) { //自动任务,则让其加入
                     scheduler.scheduleJob(jobDetail, trigger);
                 }
             } else {

@@ -27,11 +27,12 @@ public class ScheduleRecord implements Serializable{
 	public ScheduleRecord() {
 	}
 
-	public ScheduleRecord(Long taskId, String triggerInstId, Date startTime, Date endTime) {
+	public ScheduleRecord(Long taskId, String triggerInstId, Date startTime, Date endTime,Long cost) {
 		this.taskId = taskId;
 		this.triggerInstId = triggerInstId;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.cost = cost;
 	}
 
 
