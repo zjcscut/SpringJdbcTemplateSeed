@@ -10,41 +10,44 @@ import java.util.Date;
  */
 public class ScheduleRecord implements Serializable{
 
-	private Integer id;
+	/*主键*/
+	private Long id;
 
-	private Integer taskId;
-
+	/*任务id*/
+	private Long taskId;
+    /*触发器实例id*/
 	private String triggerInstId;
-
+    /*开始时间*/
 	private Date startTime;
-
+	/*结束时间*/
 	private Date endTime;
-
+    /*耗时 ms*/
 	private Long cost;
 
 	public ScheduleRecord() {
 	}
 
-	public ScheduleRecord(Integer taskId, String triggerInstId, Date startTime, Date endTime) {
+	public ScheduleRecord(Long taskId, String triggerInstId, Date startTime, Date endTime) {
 		this.taskId = taskId;
 		this.triggerInstId = triggerInstId;
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
 
-	public Integer getId() {
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Integer getTaskId() {
+	public Long getTaskId() {
 		return taskId;
 	}
 
-	public void setTaskId(Integer taskId) {
+	public void setTaskId(Long taskId) {
 		this.taskId = taskId;
 	}
 

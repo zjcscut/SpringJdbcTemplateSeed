@@ -1,4 +1,4 @@
-package cn.zjc.entity;
+package cn.zjc.schedule.entity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -21,24 +21,26 @@ public class ScheduleJob implements Serializable {
     private Long id;
     /*任务名*/
     private String jobName;
-    /*任务别名*/
-    private String aliasNmae;
     /*任务分组名*/
     private String jobGroup;
-    /*触发器*/
-    private String jobTrigger;
-    /*任务状态*/
-    private String status;
     /*任务运行Cron表达式*/
     private String cronExpression;
-    /*是否异步,1:手动,0:自动*/
-    private Integer isManual;
+    /*启动方式,1:手动,0:自动*/
+    private Integer runType;
+    /*启动状态,1:启动,0:停止*/
+    private Integer runStatus;
     /*任务描述*/
     private String description;
+    /*执行时间*/
+    private Date executeTime;
     /*创建时间*/
     private Date createTime;
     /*修改时间*/
     private Date modifyTime;
+    /*执行的任务类*/
+    private String targetClassNmae;
+    /*是否有效*/
+    private Integer isEnabled;
 
     public ScheduleJob() {
     }
@@ -59,13 +61,6 @@ public class ScheduleJob implements Serializable {
         this.jobName = jobName;
     }
 
-    public String getAliasNmae() {
-        return aliasNmae;
-    }
-
-    public void setAliasNmae(String aliasNmae) {
-        this.aliasNmae = aliasNmae;
-    }
 
     public String getJobGroup() {
         return jobGroup;
@@ -75,36 +70,12 @@ public class ScheduleJob implements Serializable {
         this.jobGroup = jobGroup;
     }
 
-    public String getJobTrigger() {
-        return jobTrigger;
-    }
-
-    public void setJobTrigger(String jobTrigger) {
-        this.jobTrigger = jobTrigger;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getCronExpression() {
         return cronExpression;
     }
 
     public void setCronExpression(String cronExpression) {
         this.cronExpression = cronExpression;
-    }
-
-    public Integer getIsManual() {
-        return isManual;
-    }
-
-    public void setIsManual(Integer isManual) {
-        this.isManual = isManual;
     }
 
     public String getDescription() {
@@ -129,5 +100,45 @@ public class ScheduleJob implements Serializable {
 
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public Integer getRunType() {
+        return runType;
+    }
+
+    public void setRunType(Integer runType) {
+        this.runType = runType;
+    }
+
+    public Integer getRunStatus() {
+        return runStatus;
+    }
+
+    public void setRunStatus(Integer runStatus) {
+        this.runStatus = runStatus;
+    }
+
+    public Date getExecuteTime() {
+        return executeTime;
+    }
+
+    public void setExecuteTime(Date executeTime) {
+        this.executeTime = executeTime;
+    }
+
+    public String getTargetClassNmae() {
+        return targetClassNmae;
+    }
+
+    public void setTargetClassNmae(String targetClassNmae) {
+        this.targetClassNmae = targetClassNmae;
+    }
+
+    public Integer getIsEnabled() {
+        return isEnabled;
+    }
+
+    public void setIsEnabled(Integer isEnabled) {
+        this.isEnabled = isEnabled;
     }
 }

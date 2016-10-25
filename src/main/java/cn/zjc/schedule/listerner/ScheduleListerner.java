@@ -1,6 +1,6 @@
 package cn.zjc.schedule.listerner;
 
-import cn.zjc.entity.ScheduleJob;
+import cn.zjc.schedule.entity.ScheduleJob;
 import cn.zjc.exception.ScheduleException;
 import cn.zjc.schedule.dao.ScheduleRecordDao;
 import cn.zjc.schedule.entity.ScheduleRecord;
@@ -35,7 +35,7 @@ public class ScheduleListerner implements JobListener {
 
 	@Override
 	public void jobToBeExecuted(JobExecutionContext jobExecutionContext) {
-		Integer taskId = (Integer) jobExecutionContext.getMergedJobDataMap().get(ScheduleJob.JOB_PARAM_KEY);
+		Long taskId = (Long) jobExecutionContext.getMergedJobDataMap().get(ScheduleJob.JOB_PARAM_KEY);
 		Assert.notNull(taskId, "taskId must not be null,id:%d", taskId);
 		ScheduleRecord scheduleRecord = new ScheduleRecord(
 				taskId, jobExecutionContext.getFireInstanceId(), new Date(), null);

@@ -3,6 +3,7 @@ package cn.zjc.schedule.init;
 import cn.zjc.service.ScheduleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
  * @function 调度初始化
  */
 @Component
-public class ScheduleInit implements InitializingBean {
+public class ScheduleInit implements InitializingBean ,DisposableBean{
 
     private static final Logger log = LoggerFactory.getLogger(ScheduleInit.class);
 
@@ -25,5 +26,12 @@ public class ScheduleInit implements InitializingBean {
         log.debug("init Schedule Service...");
         scheduleService.initScheduleService();
         log.debug("init Schedule Service succeeded!");
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        log.debug("shutdown Schedule Service...");
+        scheduleService.shutScheduleService();
+        log.debug("shutdown Schedule Service succeeded!");
     }
 }
