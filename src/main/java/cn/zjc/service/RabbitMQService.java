@@ -26,7 +26,7 @@ public class RabbitMQService {
 	}
 
 	/**
-	 * @link cn.zjc.config.RabbitMQConfiguration
+	 * {@link cn.zjc.config.RabbitMQConfiguration}
 	 */
 	@RabbitListener(queues = "myQueue")
 	public void listerning(Message message) {

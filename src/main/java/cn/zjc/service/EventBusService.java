@@ -110,9 +110,9 @@ public class EventBusService implements InitializingBean, DisposableBean {
         Assert.isTrue(!eventBusMap.containsKey(eventBusName), "EventBus %s has been registered", eventBusName);
         EventBus newEventBus;
         if (isAsync == EventConst.IS_ASYNC) {
-            newEventBus = new AsyncEventBus(executorService);
+            newEventBus = new AsyncEventBus(eventBusName,executorService);
         } else {
-            newEventBus = new EventBus();
+            newEventBus = new EventBus(eventBusName);
         }
         eventBusMap.put(eventBusName, newEventBus);
         Class<?> clazz = null;
