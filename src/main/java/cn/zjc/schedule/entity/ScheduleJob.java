@@ -1,5 +1,6 @@
 package cn.zjc.schedule.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,6 +9,8 @@ import java.util.Date;
  * @version 2016/10/24 11:22
  * @function 计划任务信息
  */
+@Entity
+@Table(name = "TB_AT_SCHEDULE_JOB")
 public class ScheduleJob implements Serializable {
 
     private static final long serialVersionUID = 4888005949821878223L;
@@ -18,28 +21,41 @@ public class ScheduleJob implements Serializable {
     public static final String JOB_PARAM_KEY = "taskId"; //可以注入多个参数再从Context获取
 
     /*主键*/
+    @Id
+    @GeneratedValue
     private Long id;
     /*任务名*/
+    @Column(name = "JOBNAME")
     private String jobName;
     /*任务分组名*/
+    @Column(name = "JOBGROUP")
     private String jobGroup;
     /*任务运行Cron表达式*/
+    @Column(name = "CRON_EXPRESSION")
     private String cronExpression;
     /*启动方式,1:手动,0:自动*/
+    @Column(name = "RUN_TYPE")
     private Integer runType;
     /*启动状态,1:启动,0:停止*/
+    @Column(name = "RUN_STATUS")
     private Integer runStatus;
     /*任务描述*/
+    @Column(name = "DESCRTPTION")
     private String description;
     /*执行时间*/
+    @Column(name = "EXECUTE_TIME")
     private Date executeTime;
     /*创建时间*/
+    @Column(name = "CREATE_TIME")
     private Date createTime;
     /*修改时间*/
+    @Column(name = "MODIFY_TIME")
     private Date modifyTime;
     /*执行的任务类*/
+    @Column(name = "TARGET_CLASS_NAME")
     private String targetClassNmae;
     /*是否有效*/
+    @Column(name = "IS_ENABLED")
     private Integer isEnabled;
 
     public ScheduleJob() {

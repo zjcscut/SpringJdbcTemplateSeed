@@ -135,9 +135,9 @@ public class DruidConfiguration {
 		return new JdbcTemplate(dataSource);
 	}
 
-	//配置事务
-	@Bean
-	public PlatformTransactionManager platformTransactionManager(DynamicDataSource dynamicDataSource) {
-		return new DataSourceTransactionManager(dynamicDataSource);
-	}
+//	//配置事务
+//	@Bean
+//	public PlatformTransactionManager platformTransactionManager(DynamicDataSource dynamicDataSource) {
+//		return new DataSourceTransactionManager(dynamicDataSource);
+//	}
 }

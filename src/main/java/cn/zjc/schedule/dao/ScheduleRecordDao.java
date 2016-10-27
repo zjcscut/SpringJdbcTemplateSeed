@@ -22,8 +22,6 @@ public class ScheduleRecordDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	@Autowired
-	private SimpleJdbcInsert simpleJdbcInsert;
 
 	public void save(ScheduleRecord record) {
 		jdbcTemplate.update("INSERT INTO TB_AT_SCHEDULE_RECORD(TASK_ID,TRIGGER_INST_ID,START_TIME,END_TIME,COST) VALUES (?,?,?,?,?)",

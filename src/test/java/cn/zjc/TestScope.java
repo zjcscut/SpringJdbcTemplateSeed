@@ -6,6 +6,7 @@ import cn.zjc.config.TargetDataSource;
 import cn.zjc.dao.UserRepository;
 import cn.zjc.service.EventBusService;
 import cn.zjc.service.RabbitMQService;
+import cn.zjc.service.ScheduleService;
 import cn.zjc.service.UserService;
 import cn.zjc.utils.SpringContextsUtil;
 import com.google.common.eventbus.EventBus;
@@ -31,6 +32,9 @@ import static org.junit.Assert.*;
 public class TestScope {
 
 	private Logger log = LoggerFactory.getLogger(TestScope.class);
+
+	@Autowired
+	private ScheduleService scheduleService;
 
 //	@Autowired
 //	private UserRepository userRepository;
@@ -114,8 +118,8 @@ public class TestScope {
 
 	@Test
 	public void testReflect()throws Exception{
-		Class<?> clazz = Class.forName("cn.zjc.schedule.factory.JobAsyncFactory");
-		System.out.println((Class<? extends  Job> )clazz);
+		assertTrue(1 == scheduleService.queryAll().size());
+		assertTrue(1 == scheduleService.queryByTaskId(1L).getId());
 	}
 
 }
