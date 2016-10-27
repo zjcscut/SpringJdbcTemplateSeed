@@ -10,7 +10,7 @@ import java.sql.SQLException;
 /**
  * @author zhangjinci
  * @version 2016/10/27 17:41
- * @function
+ * @function quartz-druid连接池使用提供者
  */
 public class QuartzDruidProvider implements ConnectionProvider {
 /*

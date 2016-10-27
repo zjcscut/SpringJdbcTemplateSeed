@@ -62,6 +62,16 @@
 
     </appender>
 
+    <!-- Turn off third party chatter -->
+    <logger name="org.springframework.amqp" level="INFO" />
+    <logger name="org.springframework.beans" level="WARN"/>
+    <logger name="org.springframework.context" level="WARN"/>
+    <logger name="org.springframework.core" level="WARN"/>
+    <logger name="org.springframework.aop" level="WARN"/>
+    <logger name="org.springframework.web" level="WARN"/>
+
+
+
 
     <root level="DEBUG">
         <appender-ref ref="STDOUT" />
