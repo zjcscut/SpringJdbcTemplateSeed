@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @version 2016/10/24 11:38
  * @function
  */
-@DisallowConcurrentExecution //不允许多个任务并发
+//@DisallowConcurrentExecution //不允许多个任务并发
 public class JobFactory implements Job {
 
     private static final Logger log = LoggerFactory.getLogger(JobFactory.class);
@@ -27,17 +27,6 @@ public class JobFactory implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        log.debug("JobAsyncFactory execute...");
-        ScheduleJob job = (ScheduleJob) jobExecutionContext
-                .getMergedJobDataMap()
-                .get(ScheduleJob.JOB_PARAM_KEY);
-
-        Assert.notNull(job);
-        log.debug("jobName:" + job.getJobName() + " " + job);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            log.error("JobFactory sleep failed:" + e.getMessage());
-        }
+        System.out.println("JobFactory正在执行调度-----------------------------------");
     }
 }

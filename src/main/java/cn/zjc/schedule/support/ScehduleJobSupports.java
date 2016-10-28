@@ -2,14 +2,13 @@ package cn.zjc.schedule.support;
 
 import cn.zjc.schedule.entity.ScheduleJob;
 import cn.zjc.exception.ScheduleException;
-import cn.zjc.schedule.listerner.ScheduleListerner;
+import cn.zjc.schedule.listerner.ScheduleJobListerner;
 import cn.zjc.utils.Assert;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +28,6 @@ public class ScehduleJobSupports {
     private static final String DEFAULT_TRIGGER_GROUP = "default_trigger_group";
 
     @Autowired
-    @Qualifier(value = "schedulerFactoryBean")
     private SchedulerFactoryBean schedulerFactoryBean;
 
     /**
@@ -99,13 +97,16 @@ public class ScehduleJobSupports {
         if (StringUtils.isBlank(triggerGroup)) {
             triggerGroup = DEFAULT_TRIGGER_GROUP;
         }
+        if (startTime == null) {
+            startTime = new Date();
+        }
         Scheduler scheduler = schedulerFactoryBean.getScheduler();
         Assert.notNull(scheduler, "schedulerFactoryBean must not be null");
         try {
             CronTrigger cronTrigger = getCronTrigger(triggerName, triggerGroup);
             if (cronTrigger != null) {
-                throw new ScheduleException("创建定时任务失败,触发器--任务名--任务组重复");
-            } else if (runType == 1) {  //自动启动的任务
+                log.debug("添加定时任务失败,触发器--任务名--任务组重复:此任务已在调度计划之中");
+            } else if (runType == 0) {  //自动启动的任务
                 //注入job class
                 Class<? extends Job> jobClass = (Class<? extends Job>) Class.forName(targetClassName);
                 //构建job信息
@@ -231,7 +232,7 @@ public class ScehduleJobSupports {
             Scheduler scheduler = schedulerFactoryBean.getScheduler();
             Assert.notNull(scheduler);
             if (!scheduler.isStarted()) {
-                scheduler.getListenerManager().addJobListener(new ScheduleListerner());
+                scheduler.getListenerManager().addJobListener(new ScheduleJobListerner());
                 scheduler.start();
             }
         } catch (SchedulerException e) {

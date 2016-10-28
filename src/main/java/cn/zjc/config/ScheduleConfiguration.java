@@ -1,6 +1,6 @@
 package cn.zjc.config;
 
-import org.springframework.beans.factory.annotation.Qualifier;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -16,8 +16,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 @Configuration
 public class ScheduleConfiguration {
 
-    @Bean
-    @Qualifier(value = "schedulerFactoryBean")
+    @Bean(name = "schedulerFactoryBean")
     public SchedulerFactoryBean schedulerFactoryBean() {
         SchedulerFactoryBean factoryBean = new SchedulerFactoryBean();
         ClassPathResource quartzResource = new ClassPathResource("quartz/quartz.properties"); //quartz的配置文件
