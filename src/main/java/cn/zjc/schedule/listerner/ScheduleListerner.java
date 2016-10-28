@@ -39,7 +39,7 @@ public class ScheduleListerner implements JobListener {
 		Assert.notNull(taskId, "taskId must not be null,id:%d", taskId);
 		ScheduleRecord scheduleRecord = new ScheduleRecord(
 				taskId, jobExecutionContext.getFireInstanceId(), new Date(), null, null);
-		scheduleRecordDao.save(scheduleRecord);
+		scheduleRecordDao.saveL(scheduleRecord);
 	}
 
 	@Override
@@ -54,7 +54,8 @@ public class ScheduleListerner implements JobListener {
 		try {
 			ScheduleRecord record = scheduleRecordDao.queryByTaskId(taskId);
 			if (record == null) {
-				throw new ScheduleException(String.format("定时任务监听器异常：保存执行完成记录时错误，找不到任务开始记录;triggerInstId:%s", jobExecutionContext.getFireInstanceId()));
+				throw new ScheduleException(String.format("定时任务监听器异常：保存执行完成记录时错误，找不到任务开始记录;triggerInstId:%s",
+						jobExecutionContext.getFireInstanceId()));
 			}
 			record.setEndTime(new Date());
 			record.setCost(record.getEndTime().getTime() - record.getStartTime().getTime());

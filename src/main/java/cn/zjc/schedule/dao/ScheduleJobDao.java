@@ -1,9 +1,8 @@
 package cn.zjc.schedule.dao;
 
+import cn.zjc.dao.AbstractCRUDDAO;
 import cn.zjc.schedule.entity.ScheduleJob;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -12,18 +11,29 @@ import java.util.List;
  * @version 2016/10/24 11:55
  * @function
  */
+@Repository
+public class ScheduleJobDao extends AbstractCRUDDAO<ScheduleJob> {
 
-public interface ScheduleJobDao extends JpaRepository<ScheduleJob, Long> {
+
+    @Override
+    protected Class<ScheduleJob> getEntityClass() {
+        return ScheduleJob.class;
+    }
 
 
-    @Query(value = "SELECT * FROM TB_AT_SCHEDULE_JOB WHERE RUN_TYPE = 0 AND IS_ENABLED = 1", nativeQuery = true)
-    List<ScheduleJob> queryAutoList();
+    public List<ScheduleJob> queryAutoList() {
+        return getCurrentSession().createQuery("FROM ScheduleJob s  where s.runType = 0 AND s.isEnabled = 1")
+                .list();
+    }
 
-    @Query(value = "SELECT * FROM TB_AT_SCHEDULE_JOB WHERE ID = :id", nativeQuery = true)
-    ScheduleJob queryById(@Param("id") Long id);
+    public ScheduleJob queryById(Long id) {
+        return fetch(id);
+    }
 
-    @Query(value = "SELECT * FROM TB_AT_SCHEDULE_JOB", nativeQuery = true)
-    List<ScheduleJob> queryAll();
+
+    public List<ScheduleJob> queryAll() {
+        return findAll();
+    }
 
 
 }

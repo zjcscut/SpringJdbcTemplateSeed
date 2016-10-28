@@ -4,6 +4,7 @@ import cn.zjc.config.DataSourceContextHolder;
 import cn.zjc.config.DataSourceType;
 import cn.zjc.config.TargetDataSource;
 import cn.zjc.dao.UserRepository;
+import cn.zjc.schedule.entity.ScheduleJob;
 import cn.zjc.service.EventBusService;
 import cn.zjc.service.RabbitMQService;
 import cn.zjc.service.ScheduleService;
@@ -20,6 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -31,10 +34,10 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = {Application.class})
 public class TestScope {
 
-	private Logger log = LoggerFactory.getLogger(TestScope.class);
+    private Logger log = LoggerFactory.getLogger(TestScope.class);
 
-	@Autowired
-	private ScheduleService scheduleService;
+    @Autowired
+    private ScheduleService scheduleService;
 
 //	@Autowired
 //	private UserRepository userRepository;
@@ -116,10 +119,14 @@ public class TestScope {
 //		System.out.println(o);
 //	}
 
-	@Test
-	public void testReflect()throws Exception{
-		assertTrue(1 == scheduleService.queryAll().size());
-		assertTrue(1 == scheduleService.queryByTaskId(1L).getId());
-	}
+    @Test
+    public void testReflect() throws Exception {
+        List<ScheduleJob> jobs = scheduleService.queryAll();
+        ScheduleJob job = scheduleService.queryByTaskId(1L);
+
+        System.out.println("1111111");
+
+        System.in.read();
+    }
 
 }

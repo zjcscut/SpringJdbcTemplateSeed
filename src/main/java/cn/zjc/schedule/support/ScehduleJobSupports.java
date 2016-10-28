@@ -76,7 +76,7 @@ public class ScehduleJobSupports {
      */
     public void createScheduleJob(ScheduleJob scheduleJob) {
         createScheduleJob(scheduleJob.getJobName(), scheduleJob.getJobGroup(), scheduleJob.getTargetClassNmae(), scheduleJob.getJobName(), scheduleJob.getJobGroup(),
-                scheduleJob.getCronExpression(), scheduleJob.getRunType(), scheduleJob.getExecuteTime(), scheduleJob.getId());
+                scheduleJob.getCronExpression(), scheduleJob.getRunType(), scheduleJob.getExecuteTime(), scheduleJob);
     }
 
 
@@ -99,9 +99,13 @@ public class ScehduleJobSupports {
         if (StringUtils.isBlank(triggerGroup)) {
             triggerGroup = DEFAULT_TRIGGER_GROUP;
         }
+        Scheduler scheduler = schedulerFactoryBean.getScheduler();
+        Assert.notNull(scheduler, "schedulerFactoryBean must not be null");
         try {
-            TriggerKey triggerKey = getTriggerKey(triggerName, triggerGroup);
-            if (triggerKey == null) {
+            CronTrigger cronTrigger = getCronTrigger(triggerName, triggerGroup);
+            if (cronTrigger != null) {
+                throw new ScheduleException("创建定时任务失败,触发器--任务名--任务组重复");
+            } else if (runType == 1) {  //自动启动的任务
                 //注入job class
                 Class<? extends Job> jobClass = (Class<? extends Job>) Class.forName(targetClassName);
                 //构建job信息
@@ -111,19 +115,14 @@ public class ScehduleJobSupports {
                 //表达式调度构建器
                 CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression).withMisfireHandlingInstructionDoNothing();
                 //按新的cronExpression表达式构建一个新的trigger
-                CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerName, triggerGroup).startAt(startTime)
+                cronTrigger = TriggerBuilder.newTrigger().withIdentity(triggerName, triggerGroup).startAt(startTime)
                         .withSchedule(scheduleBuilder).build();
-                Scheduler scheduler = schedulerFactoryBean.getScheduler();
-                Assert.notNull(scheduler);
-                if (runType == 1) { //自动任务,则让其加入
-                    scheduler.scheduleJob(jobDetail, trigger);
-                }
-            } else {
-                updateScheduleJob(jobName, jobGroup, cronExpression);
+                scheduler.scheduleJob(jobDetail, cronTrigger);
+                log.debug("调度任务[" + jobName + "]添加成功...");
             }
+
         } catch (SchedulerException | ClassNotFoundException e) {
-            log.error("创建定时任务失败", e);
-            throw new ScheduleException("创建定时任务失败");
+            log.error("创建定时任务失败,异常信息:{}", e.getMessage());
         }
     }
 

@@ -28,12 +28,12 @@ public class JobFactory implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         log.debug("JobAsyncFactory execute...");
-        Long taskId = (Long) jobExecutionContext
+        ScheduleJob job = (ScheduleJob) jobExecutionContext
                 .getMergedJobDataMap()
                 .get(ScheduleJob.JOB_PARAM_KEY);
-        ScheduleJob scheduleJob = scheduleService.queryByTaskId(taskId);
-        Assert.notNull(scheduleJob);
-        log.debug("jobName:" + scheduleJob.getJobName() + " " + scheduleJob);
+
+        Assert.notNull(job);
+        log.debug("jobName:" + job.getJobName() + " " + job);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

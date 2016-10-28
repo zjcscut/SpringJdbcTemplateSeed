@@ -18,7 +18,7 @@ public class ScheduleJob implements Serializable {
     /**
      * 任务调度的参数key
      */
-    public static final String JOB_PARAM_KEY = "taskId"; //可以注入多个参数再从Context获取
+    public static final String JOB_PARAM_KEY = "scheduleJob"; //可以注入多个参数再从Context获取,这里把整个scheduleJob放进去上下文
 
     /*主键*/
     @Id

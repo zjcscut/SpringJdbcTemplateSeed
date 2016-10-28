@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  * @function 调度初始化
  */
 @Component
-public class ScheduleInit implements InitializingBean ,DisposableBean{
+public class ScheduleInit implements InitializingBean, DisposableBean {
 
     private static final Logger log = LoggerFactory.getLogger(ScheduleInit.class);
 
@@ -23,15 +23,15 @@ public class ScheduleInit implements InitializingBean ,DisposableBean{
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        log.debug("init Schedule Service...");
+        log.debug("Quartz调度服务启动...");
         scheduleService.initScheduleService();
-        log.debug("init Schedule Service succeeded!");
+        log.debug("Quartz调度服务启动成功...!");
     }
 
     @Override
     public void destroy() throws Exception {
-        log.debug("shutdown Schedule Service...");
+        log.debug("Quartz调度服务关闭...");
         scheduleService.shutScheduleService();
-        log.debug("shutdown Schedule Service succeeded!");
+        log.debug("Quartz调度服务关闭成功...");
     }
 }

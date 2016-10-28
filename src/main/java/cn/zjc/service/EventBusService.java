@@ -57,7 +57,7 @@ public class EventBusService implements InitializingBean, DisposableBean {
     }
 
     private void init() {
-        log.debug("EventBus配置正在启动.....");
+        log.debug("EventBus服务正在启动.....");
         executorService = Executors.newFixedThreadPool(DEFAULT_POOL_SIZE);
         List<EventBusDef> eventBusDefs = eventBusDefDao.queryAll();
         for (EventBusDef def : eventBusDefs) {
@@ -88,7 +88,7 @@ public class EventBusService implements InitializingBean, DisposableBean {
         eventBusMap.put(DEFAULT_EVENTBUS_NAME, defaultEventBus);
         //listern deadEvent
         defaultEventBus.register(new DeadEventListerner());
-        log.debug("EventBus配置启动成功");
+        log.debug("EventBus服务启动成功");
     }
 
     private void release() {
