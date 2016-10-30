@@ -2,7 +2,7 @@
 
 <configuration debug="false" scan="true" scanPeriod="30 seconds">
 
-    <property name = "path" value = "logs"/>
+    <property name="path" value="logs"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -63,19 +63,24 @@
     </appender>
 
     <!-- Turn off third party chatter -->
-    <logger name="org.springframework.amqp" level="INFO" />
+    <!--日志屏蔽-->
+    <logger name="org.springframework.amqp" level="INFO"/>
     <logger name="org.springframework.beans" level="WARN"/>
     <logger name="org.springframework.context" level="WARN"/>
     <logger name="org.springframework.core" level="WARN"/>
     <logger name="org.springframework.aop" level="WARN"/>
     <logger name="org.springframework.web" level="WARN"/>
-
-
+    <logger name="org.springframework.test" level="WARN"/>
+    <logger name="org.springframework.test" level="WARN"/>
+    <logger name="org.hibernate.type" level="WARN"/>
+    <logger name="org.hibernate.cfg" level="WARN"/>
+    <logger name="org.hibernate.persister" level="WARN"/>
+    <logger name="org.hibernate.validator" level="WARN"/>
 
 
     <root level="DEBUG">
-        <appender-ref ref="STDOUT" />
-        <appender-ref ref="ERROR-OUT" />
-        <appender-ref ref="DEBUG-OUT" />
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ERROR-OUT"/>
+        <appender-ref ref="DEBUG-OUT"/>
     </root>
 </configuration>

@@ -1,58 +1,73 @@
 package cn.zjc.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
+
+import javax.persistence.*;
 
 /**
  * @author zhangjinci
  * @version 2016/10/7 17:36
  * @function
  */
+@Table(name = "user")
+@Entity
 public class User {
 
-    private Integer id;
-    private String name;
-    @JSONField(serialize = false)
-    private Integer age;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	@Column(name = "name")
+	private String name;
+	@Column(name = "age")
+	private Integer age;
 
-    public User() {
-    }
+	private transient String num; //流水号
 
-    public User(Integer id, String name, Integer age) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-    }
+	public User() {
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	public User(String name, Integer age) {
+		this.name = name;
+		this.age = age;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Integer getAge() {
-        return age;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
+	public Integer getAge() {
+		return age;
+	}
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                '}';
-    }
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", age=" + age +
+				'}';
+	}
+
+	public String getNum() {
+		return num;
+	}
+
+	public void setNum(String num) {
+		this.num = num;
+	}
 }

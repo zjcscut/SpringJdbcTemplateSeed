@@ -4,6 +4,7 @@ import cn.zjc.config.DataSourceContextHolder;
 import cn.zjc.config.DataSourceType;
 import cn.zjc.config.TargetDataSource;
 import cn.zjc.dao.UserRepository;
+import cn.zjc.entity.User;
 import cn.zjc.schedule.entity.ScheduleJob;
 import cn.zjc.service.EventBusService;
 import cn.zjc.service.RabbitMQService;
@@ -39,6 +40,9 @@ public class TestScope {
     @Autowired
     private ScheduleService scheduleService;
 
+	@Autowired
+	private UserService userService;
+
 //	@Autowired
 //	private UserRepository userRepository;
 //
@@ -48,11 +52,10 @@ public class TestScope {
 //	@Autowired
 //	private RabbitMQService rabbitMQService;
 //
-////    @Test
-////    public void findAllUsers(){
-////        assertEquals(1, userRepository.findAll().size());
-////        log.error("List<User> size:{}" ,userRepository.findAll().size());
-////    }
+    @Test
+    public void findAllUsers(){
+       userService.saveUser(new User("zjcscut",23));
+    }
 //
 //	@Autowired
 //	private JdbcTemplate jdbcTemplate;
@@ -128,5 +131,12 @@ public class TestScope {
 
         System.in.read();
     }
+
+    @Test
+	public void testNameQuery() throws Exception{
+		ScheduleJob job = scheduleService.nameQuery("ZJC");
+
+		System.out.println(job.getJobGroup());
+	}
 
 }

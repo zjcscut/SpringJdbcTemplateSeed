@@ -20,36 +20,46 @@ import java.util.List;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    public List<User> selectAll() {
-        return userRepository.findAll();
-    }
+	public List<User> selectAll() {
+		return userRepository.findAll();
+	}
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
-    @TargetDataSource(value = DataSourceType.MASTER) //使用主数据源
-    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
-    public Integer selectAllCount() {
-        return jdbcTemplate.queryForObject("Select count(*) from user", Integer.class);
-    }
-    
-    @TargetDataSource(value = DataSourceType.SLAVER)
-    @Transactional(propagation = Propagation.REQUIRED)
-    public Integer selectAllCountFromSlaver() { //使用从数据源
-        return jdbcTemplate.queryForObject("Select count(*) from user", Integer.class);
-    }
+	@TargetDataSource(value = DataSourceType.MASTER) //使用主数据源
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	public Integer selectAllCount() {
+		return jdbcTemplate.queryForObject("Select count(*) from user", Integer.class);
+	}
+
+	@TargetDataSource(value = DataSourceType.SLAVER)
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Integer selectAllCountFromSlaver() { //使用从数据源
+		return jdbcTemplate.queryForObject("Select count(*) from user", Integer.class);
+	}
 
 
-    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
-	public void testTransaction(){
-        jdbcTemplate.update("INSERT INTO user(name,age) VALUES (?,?)",new Object[]{"zjc","100"});
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+	public void testTransaction() {
+		jdbcTemplate.update("INSERT INTO user(name,age) VALUES (?,?)", new Object[]{"zjc", "100"});
 
-		int s = 1/0;
+		int s = 1 / 0;
 		Integer count = jdbcTemplate.queryForObject("Select count(*) from user", Integer.class);
 
 		System.out.println(count);
+	}
+
+
+	@Transactional
+	public boolean saveUser(User u) {
+		if (userRepository.queryByName(u.getName()) != null) {
+			return false;
+		}
+		userRepository.save(u);
+		return true;
 	}
 }

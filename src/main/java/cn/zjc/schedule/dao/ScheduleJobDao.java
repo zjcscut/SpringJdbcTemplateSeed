@@ -15,25 +15,31 @@ import java.util.List;
 public class ScheduleJobDao extends AbstractCRUDDAO<ScheduleJob> {
 
 
-    @Override
-    protected Class<ScheduleJob> getEntityClass() {
-        return ScheduleJob.class;
-    }
+	@Override
+	protected Class<ScheduleJob> getEntityClass() {
+		return ScheduleJob.class;
+	}
 
 
-    public List<ScheduleJob> queryAutoList() {
-        return getCurrentSession().createQuery("FROM ScheduleJob s  where s.runType = 0 AND s.isEnabled = 1")
-                .list();
-    }
+	public List<ScheduleJob> queryAutoList() {
+		return getCurrentSession().createQuery("FROM ScheduleJob s  where s.runType = 0 AND s.isEnabled = 1")
+				.list();
+	}
 
-    public ScheduleJob queryById(Long id) {
-        return fetch(id);
-    }
+	public ScheduleJob queryById(Long id) {
+		return fetch(id);
+	}
 
 
-    public List<ScheduleJob> queryAll() {
-        return findAll();
-    }
+	public List<ScheduleJob> queryAll() {
+		return findAll();
+	}
+
+	public ScheduleJob nameQuery(String jobName) {
+		return (ScheduleJob) getCurrentSession().getNamedQuery("selectByName")
+				.setString("jobName", jobName)
+				.uniqueResult();
+	}
 
 
 }

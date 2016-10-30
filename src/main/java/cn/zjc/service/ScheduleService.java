@@ -81,5 +81,9 @@ public class ScheduleService {
 		return scheduleRecordDao.queryByTaskId(taskId);
 	}
 
+	public ScheduleJob nameQuery(String jobName) {
+		return scheduleJobDao.nameQuery(jobName);
+	}
+
 
 }
