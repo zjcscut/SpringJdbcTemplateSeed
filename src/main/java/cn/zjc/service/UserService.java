@@ -1,5 +1,6 @@
 package cn.zjc.service;
 
+import cn.zjc.common.aop.resubmit.ResubmitHandler;
 import cn.zjc.config.DataSourceType;
 import cn.zjc.config.TargetDataSource;
 import cn.zjc.dao.UserRepository;
@@ -61,5 +62,10 @@ public class UserService {
 		}
 		userRepository.save(u);
 		return true;
+	}
+
+	@ResubmitHandler
+	public void testAop(){
+
 	}
 }

@@ -1,5 +1,9 @@
 package cn.zjc.schedule.entity;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,9 +15,12 @@ import java.util.Date;
 public class ScheduleRecord implements Serializable{
 
 	/*主键*/
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	/*任务id*/
+	@Column(name = "")
 	private Long taskId;
     /*触发器实例id*/
 	private String triggerInstId;

@@ -1,5 +1,6 @@
 package cn.zjc;
 
+import cn.zjc.common.aop.resubmit.ResubmitHandler;
 import cn.zjc.config.DataSourceContextHolder;
 import cn.zjc.config.DataSourceType;
 import cn.zjc.config.TargetDataSource;
@@ -138,5 +139,15 @@ public class TestScope {
 
 		System.out.println(job.getJobGroup());
 	}
+
+	@Test
+    public void testAop(){
+       userService.testAop();
+    }
+
+    @ResubmitHandler
+    public void aop(){
+
+    }
 
 }
