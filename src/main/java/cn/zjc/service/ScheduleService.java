@@ -42,7 +42,7 @@ public class ScheduleService {
 		for (ScheduleJob scheduleJob : scheduleJobList) {
 			scehduleJobSupports.createScheduleJob(scheduleJob);
 		}
-		scehduleJobSupports.start();
+//		scehduleJobSupports.start();
 	}
 
 	/**

@@ -20,15 +20,19 @@ public class ScheduleRecord implements Serializable{
 	private Long id;
 
 	/*任务id*/
-	@Column(name = "")
+	@Column(name = "TASK_ID")
 	private Long taskId;
     /*触发器实例id*/
+    @Column(name = "TRIGGER_INST_ID")
 	private String triggerInstId;
     /*开始时间*/
+    @Column(name = "START_TIME")
 	private Date startTime;
 	/*结束时间*/
+	@Column(name = "END_TIME")
 	private Date endTime;
     /*耗时 ms*/
+    @Column(name = "COST")
 	private Long cost;
 
 	public ScheduleRecord() {

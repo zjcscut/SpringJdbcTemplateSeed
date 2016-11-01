@@ -33,6 +33,7 @@ public class CustomArgumentResolver implements HandlerMethodArgumentResolver {
         if (webDataBinderFactory == null) {
             return null;
         }
+
         Class<?> targetType = methodParameter.getParameterType();
         CustomParam customParam = methodParameter.getParameterAnnotation(CustomParam.class);
         String prefix = getPrefix(customParam, targetType);
