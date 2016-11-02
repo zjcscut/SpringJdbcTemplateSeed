@@ -2,6 +2,7 @@ package cn.zjc.controller;
 
 import cn.zjc.common.aop.resubmit.ResubmitHandler;
 import cn.zjc.common.request.args.CustomParam;
+import cn.zjc.common.request.args.FastJsonParam;
 import cn.zjc.entity.User;
 import cn.zjc.entity.model.UserModel;
 import cn.zjc.service.UserService;
@@ -75,10 +76,17 @@ public class UserController {
 
     @RequestMapping(value = "/user/params")
     @ResponseBody
-    public String userParams(@CustomParam("user") UserModel userModel) {
+    public String userParams(@CustomParam(value = "user") UserModel userModel) {
 
         System.out.println(userModel.toString());
         return "success";
+    }
+
+    @RequestMapping(value = "/user/json")
+    @ResponseBody
+    public Object userJson(){
+
+        return new User("zjc",23);
     }
 
 

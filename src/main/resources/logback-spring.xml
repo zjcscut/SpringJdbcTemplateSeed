@@ -76,6 +76,7 @@
     <logger name="org.hibernate.cfg" level="WARN"/>
     <logger name="org.hibernate.persister" level="WARN"/>
     <logger name="org.hibernate.validator" level="WARN"/>
+    <logger name="org.quartz" level="WARN"/>
 
 
     <root level="DEBUG">

@@ -1,8 +1,12 @@
 package cn.zjc.common.request.args;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -13,14 +17,19 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import java.lang.reflect.Field;
 
 
+
 /**
  * @author zhangjinci
  * @version 2016/10/31 12:09
  * @function 自定义复杂参数接收处理器
  */
+@Component
 public class CustomArgumentResolver implements HandlerMethodArgumentResolver {
 
     private static final String SEPARATOR = ".";
+
+    @Autowired
+    private ConversionService conversionService;
 
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
@@ -43,10 +52,22 @@ public class CustomArgumentResolver implements HandlerMethodArgumentResolver {
         Field[] fields = targetType.getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);
-            arg = binder.convertIfNecessary(nativeWebRequest.getParameter(prefix + SEPARATOR + field.getName()), field.getType(), methodParameter);
+            String customParamName = buildCustomParamName(prefix, field.getName());
+            if (ArrayUtils.contains(customParam.match(), field.getType())) { //使用Apache的数组包含判断
+                arg = conversionService.convert(nativeWebRequest.getParameter(customParamName), field.getType());  //使用ConversionService里面的Converters进行转换
+            } else {
+                arg = binder.convertIfNecessary(nativeWebRequest.getParameter(customParamName), field.getType(), methodParameter);
+            }
             field.set(target, arg);
         }
         return target;
+    }
+
+    private String buildCustomParamName(String prefix, String fieldName) {
+        if (!StringUtils.isBlank(prefix)) {
+            return prefix + SEPARATOR + fieldName;
+        }
+        return fieldName;
     }
 
     private String getPrefix(CustomParam customParam, Class<?> targetType) {

@@ -1,6 +1,8 @@
 package cn.zjc.entity;
 
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import javax.persistence.*;
 
 /**
@@ -18,6 +20,7 @@ public class User {
 	@Column(name = "name")
 	private String name;
 	@Column(name = "age")
+	@JSONField(serialize = false)
 	private Integer age;
 
 	private transient String num; //流水号

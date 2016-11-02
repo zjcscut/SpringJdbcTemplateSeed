@@ -1,10 +1,10 @@
 package cn.zjc.common.converter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.util.Assert;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -28,15 +28,46 @@ public class StringToDateConverter implements Converter<String, Date> {
 
     @Override
     public Date convert(String s) {
-        Assert.hasText(s, "Null or emtpy date string");
         Date date = null;
-        try {
-            date = DateUtils.parseDate(s, dateFormats);
-        } catch (ParseException e) {
-            String errMsg = String.format("Failed to convert [%s] to [%s] for value '%s'", String.class.toString(), Date.class.toString(), s);
-            log.debug(errMsg);
-            throw new IllegalArgumentException(errMsg);
+        if (!StringUtils.isBlank(s)) {
+            try {
+                if (localTimePatternMatch(s)) {
+                    if (matchLocalYearMonth(s)){
+                         date = cn.zjc.utils.DateUtils.parse(cn.zjc.utils.DateUtils.LOCAL_LONG_YEARMONTH_PATTERN, s);
+                    }else if (matchLocalYearMonthDay(s)){
+                        date = cn.zjc.utils.DateUtils.parse(cn.zjc.utils.DateUtils.LOCAL_DATE_PATTERN, s);
+                    }else if (matchLocalYearMonthDayTime(s)){
+                        date = cn.zjc.utils.DateUtils.parse(cn.zjc.utils.DateUtils.LOCAL_LONG_DATETIME_PATTERN, s);
+                    }
+                } else {
+                    date = DateUtils.parseDate(s, dateFormats);
+                }
+            } catch (ParseException e) {
+                String errMsg = String.format("Failed to convert [%s] to [%s] for value '%s'", String.class.toString(), Date.class.toString(), s);
+                log.debug(errMsg);
+                throw new IllegalArgumentException(errMsg);
+            }
         }
         return date;
     }
+
+    private boolean localTimePatternMatch(String source) {
+        return matchLocalYearMonth(source)
+                || matchLocalYearMonthDay(source)
+                || matchLocalYearMonthDayTime(source);
+    }
+
+    private boolean matchLocalYearMonth(String source) {
+        return source.matches("^\\d{4}年\\d{1,2}月$");
+    }
+
+    private boolean matchLocalYearMonthDay(String source) {
+        return source.matches("^\\d{4}年\\d{1,2}月\\d{1,2}日$");
+    }
+
+
+    private  boolean matchLocalYearMonthDayTime(String source) {
+        return source.matches("^\\d{4}年\\d{1,2}月\\d{1,2}日\\s\\d{1,2}时\\d{1,2}分\\d{1,2}秒$");
+    }
+
 }

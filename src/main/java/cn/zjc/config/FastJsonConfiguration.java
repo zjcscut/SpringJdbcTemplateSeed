@@ -10,6 +10,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author zhangjinci
@@ -19,6 +24,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnClass({JSON.class})
 public class FastJsonConfiguration {
+
+    public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 
 
     @Configuration
@@ -50,6 +57,11 @@ public class FastJsonConfiguration {
             };
             config.setSerializeFilters(valueFilter);
             converter.setFastJsonConfig(config);
+            converter.setDefaultCharset(DEFAULT_CHARSET);
+            List<MediaType> supportedMediaTypes = new ArrayList<>(2);
+            supportedMediaTypes.add(MediaType.APPLICATION_JSON);
+            supportedMediaTypes.add(new MediaType("application", "*+json"));
+            converter.setSupportedMediaTypes(supportedMediaTypes);
             return converter;
         }
     }

@@ -1,9 +1,11 @@
 package cn.zjc.config;
 
 import cn.zjc.security.XssFilter;
+
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 
 /**
  * @author zjc
@@ -13,14 +15,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SecuritySupportConfig {
 
-	//配置Xss过滤器
-	@Bean
-	public FilterRegistrationBean XssFilterRegistrationBean() {
-		FilterRegistrationBean filterRegistrationBean
-				= new FilterRegistrationBean(new XssFilter());
-		filterRegistrationBean.setName("XssFilter");
-		filterRegistrationBean.addUrlPatterns("/*");
-		return filterRegistrationBean;
-	}
+    //配置Xss过滤器
+    @Bean
+    public FilterRegistrationBean XssFilterRegistrationBean() {
+        FilterRegistrationBean filterRegistrationBean
+                = new FilterRegistrationBean(new XssFilter());
+        filterRegistrationBean.setName("XssFilter");
+        filterRegistrationBean.addUrlPatterns("/*");
+        return filterRegistrationBean;
+    }
+
+
 
 }
