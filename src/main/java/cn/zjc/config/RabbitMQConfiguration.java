@@ -62,7 +62,8 @@ public class RabbitMQConfiguration {
 		connectionFactory.setPort(Integer.valueOf(environment.getProperty("spring.custom.rabbitmq.port")));
 		connectionFactory.setVirtualHost(environment.getProperty("spring.custom.rabbitmq.virtual_port"));
 		connectionFactory.setPublisherConfirms(CONFIRMS_MANUAL);  //必须手工设置确认,发布确认
-		connectionFactory.setExecutor(threadPoolTaskExecutor);
+//		connectionFactory.setPublisherReturns(true);
+//		connectionFactory.setExecutor(threadPoolTaskExecutor);
 		return connectionFactory;
 	}
 
@@ -96,7 +97,8 @@ public class RabbitMQConfiguration {
 		factory.setTaskExecutor(threadPoolTaskExecutor);
 		factory.setMessageConverter(new Jackson2JsonMessageConverter()); //设置字符串转换器
 		factory.setConnectionFactory(connectionFactory);
-		factory.setAcknowledgeMode(AcknowledgeMode.MANUAL); //设置手动确认消费成功
+
+//		factory.setAcknowledgeMode(AcknowledgeMode.NONE); //设置手动确认消费成功
 		return factory;
 	}
 
@@ -123,7 +125,7 @@ public class RabbitMQConfiguration {
 
 		//对于返回消息，模板的mandatory属性必须被设定为true
 		//同样要求CachingConnectionFactory的publisherReturns属性被设定为true
-		rabbitTemplate.setMandatory(true);
+//		rabbitTemplate.setMandatory(true);
 
 		//发布消息确认
 		rabbitTemplate.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {

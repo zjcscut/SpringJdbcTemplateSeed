@@ -28,19 +28,17 @@ public class RabbitMQService {
 	private RabbitTemplate rabbitTemplate;
 
 	public void sendMessage() {
-		Message message = MessageBuilder.withBody("Hello SpringBoot-AMPQ".getBytes()).build();
+		Message message =
+				MessageBuilder.withBody("Hello SpringBoot-AMPQ".getBytes())
+						.setContentEncoding("UTF-8")
+						.build();
 		rabbitTemplate.send("directExchange", "route-key", message, new CorrelationData(String.valueOf(System.currentTimeMillis())));
 	}
 
 	/**
 	 * {@link cn.zjc.config.RabbitMQConfiguration}
 	 */
-//	@RabbitListener(admin = "amqpAdmin", containerFactory = "simpleRabbitListenerContainerFactory",
-//			bindings = @QueueBinding(
-//					value = @Queue(value = "myQueue", durable = "true"),
-//					exchange = @Exchange(value = "directExchange", type = ExchangeTypes.DIRECT, durable = "true"),
-//					key = "route-key"
-//			))
+	@RabbitListener(queues = "myQueue", containerFactory = "simpleRabbitListenerContainerFactory")
 	public void listerning(Message message) {
 		log.error("receive queue:myQueue message --------------");
 

@@ -25,12 +25,12 @@ public class HelloMessageListerner implements ChannelAwareMessageListener {
 	private static final Logger log = LoggerFactory.getLogger(HelloMessageListerner.class);
 
 	@Override
-	@RabbitListener(admin = "amqpAdmin", containerFactory = "simpleRabbitListenerContainerFactory",
-			bindings = @QueueBinding(
-					value = @Queue(value = "myQueue", durable = "true"),
-					exchange = @Exchange(value = "directExchange", type = ExchangeTypes.DIRECT, durable = "true"),
-					key = "route-key"
-			))
+//	@RabbitListener(admin = "amqpAdmin", containerFactory = "simpleRabbitListenerContainerFactory",
+//			bindings = @QueueBinding(
+//					value = @Queue(value = "myQueue", durable = "true"),
+//					exchange = @Exchange(value = "directExchange", type = ExchangeTypes.DIRECT, durable = "true"),
+//					key = "route-key"
+//			))
 	public void onMessage(Message message, Channel channel) throws Exception {
 		channel.basicAck(message.getMessageProperties().getDeliveryTag(), false); //确认消费
         log.debug("确认消费,消息为:===>" + new String(message.getBody()) + ";时间:" + System.currentTimeMillis());
