@@ -77,6 +77,7 @@
     <logger name="org.hibernate.persister" level="WARN"/>
     <logger name="org.hibernate.validator" level="WARN"/>
     <logger name="org.quartz" level="WARN"/>
+    <!--<logger name="org.springframework.retry" level="WARN"/>-->
 
 
     <root level="DEBUG">

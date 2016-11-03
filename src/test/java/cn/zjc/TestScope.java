@@ -41,23 +41,25 @@ public class TestScope {
     @Autowired
     private ScheduleService scheduleService;
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-//	@Autowired
+    //	@Autowired
 //	private UserRepository userRepository;
 //
 //	@Autowired
 //	private EventBusService eventBusService;
 //
-//	@Autowired
-//	private RabbitMQService rabbitMQService;
-//
+    @Autowired
+    private RabbitMQService rabbitMQService;
+
+    //
     @Test
-    public void findAllUsers(){
-       userService.saveUser(new User("zjcscut",23));
+    public void findAllUsers() {
+        userService.saveUser(new User("zjcscut", 23));
     }
-//
+
+    //
 //	@Autowired
 //	private JdbcTemplate jdbcTemplate;
 //
@@ -106,16 +108,13 @@ public class TestScope {
 //		System.in.read();
 //	}
 //
-//	@Test
-//	public void testRabbitMQ() throws Exception {
-//		rabbitMQService.sendMessage();
-//		try {
-//			Thread.sleep(5000);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		System.in.read();
-//	}
+    @Test
+    public void testRabbitMQ() throws Exception {
+        for (int i = 0; i < 10000; i++) {  //发送一万条
+            rabbitMQService.sendMessage();
+        }
+        System.in.read();
+    }
 //
 //	@Test
 //	public void testApplicationContextUtils()throws Exception{
@@ -134,19 +133,19 @@ public class TestScope {
     }
 
     @Test
-	public void testNameQuery() throws Exception{
-		ScheduleJob job = scheduleService.nameQuery("ZJC");
+    public void testNameQuery() throws Exception {
+        ScheduleJob job = scheduleService.nameQuery("ZJC");
 
-		System.out.println(job.getJobGroup());
-	}
+        System.out.println(job.getJobGroup());
+    }
 
-	@Test
-    public void testAop(){
-       userService.testAop();
+    @Test
+    public void testAop() {
+        userService.testAop();
     }
 
     @ResubmitHandler
-    public void aop(){
+    public void aop() {
 
     }
 
