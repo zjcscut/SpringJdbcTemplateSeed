@@ -110,7 +110,7 @@ public class TestScope {
 //
     @Test
     public void testRabbitMQ() throws Exception {
-        for (int i = 0; i < 10000; i++) {  //发送一万条
+        for (int i = 0; i < 10; i++) {  //发送一万条
             rabbitMQService.sendMessage();
         }
         System.in.read();

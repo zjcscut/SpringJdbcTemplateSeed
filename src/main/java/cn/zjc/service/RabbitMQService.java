@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -21,28 +22,29 @@ import org.springframework.stereotype.Service;
 @Service
 public class RabbitMQService {
 
-    private static final Logger log = LoggerFactory.getLogger(RabbitMQService.class);
+	private static final Logger log = LoggerFactory.getLogger(RabbitMQService.class);
 
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
+	@Autowired
+	private RabbitTemplate rabbitTemplate;
 
-    public void sendMessage() {
-        rabbitTemplate.correlationConvertAndSend("Hello SpringBoot-RabbitMQ", new CorrelationData(String.valueOf(System.currentTimeMillis())));
-    }
+	public void sendMessage() {
+		Message message = MessageBuilder.withBody("Hello SpringBoot-AMPQ".getBytes()).build();
+		rabbitTemplate.send("directExchange", "route-key", message, new CorrelationData(String.valueOf(System.currentTimeMillis())));
+	}
 
-    /**
-     * {@link cn.zjc.config.RabbitMQConfiguration}
-     */
-    @RabbitListener(admin = "amqpAdmin", containerFactory = "simpleRabbitListenerContainerFactory",
-            bindings = @QueueBinding(
-                    value = @Queue(value = "myQueue", durable = "true"),
-                    exchange = @Exchange(value = "directExchange", type = ExchangeTypes.DIRECT, durable = "true"),
-                    key = "route-key"
-            ))
-    public void listerning(Message message) {
-        log.error("receive queue:myQueue message --------------");
+	/**
+	 * {@link cn.zjc.config.RabbitMQConfiguration}
+	 */
+//	@RabbitListener(admin = "amqpAdmin", containerFactory = "simpleRabbitListenerContainerFactory",
+//			bindings = @QueueBinding(
+//					value = @Queue(value = "myQueue", durable = "true"),
+//					exchange = @Exchange(value = "directExchange", type = ExchangeTypes.DIRECT, durable = "true"),
+//					key = "route-key"
+//			))
+	public void listerning(Message message) {
+		log.error("receive queue:myQueue message --------------");
 
-        System.out.println("current thread:" + Thread.currentThread().getName() + ";message=====>:" + new String(message.getBody()));
+		System.out.println("current thread:" + Thread.currentThread().getName() + ";message=====>:" + new String(message.getBody()));
 
-    }
+	}
 }
