@@ -8,6 +8,7 @@ import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -105,6 +106,27 @@ public class FastJsonUtils {
             t = JSON.parseObject(jsonStr, clazz);
         } catch (Exception e) {
             log.error("converte json string to <{}> failed:{}", clazz.getName(), e.getMessage());
+        }
+        return t;
+    }
+
+    /**
+     * json字符串转换成Type类型
+     *
+     * @param jsonStr s
+     * @param type   type
+     * @param <T>     t
+     * @return t
+     */
+    public static <T> T toBean(final String jsonStr, Type type) {
+        if (null == jsonStr || 0 == jsonStr.length()) {
+            return null;
+        }
+        T t = null;
+        try {
+            t = JSON.parseObject(jsonStr, type);
+        } catch (Exception e) {
+            log.error("converte json string to <{}> failed:{}", type.getTypeName(), e.getMessage());
         }
         return t;
     }

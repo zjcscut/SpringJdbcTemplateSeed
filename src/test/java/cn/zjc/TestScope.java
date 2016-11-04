@@ -6,11 +6,13 @@ import cn.zjc.config.DataSourceType;
 import cn.zjc.config.TargetDataSource;
 import cn.zjc.dao.UserRepository;
 import cn.zjc.entity.User;
+import cn.zjc.jedis.JedisStringService;
 import cn.zjc.schedule.entity.ScheduleJob;
 import cn.zjc.service.EventBusService;
 import cn.zjc.service.RabbitMQService;
 import cn.zjc.service.ScheduleService;
 import cn.zjc.service.UserService;
+import cn.zjc.utils.FastJsonUtils;
 import cn.zjc.utils.SpringContextsUtil;
 import com.google.common.eventbus.EventBus;
 import org.junit.Test;
@@ -43,6 +45,9 @@ public class TestScope {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JedisStringService jedisStringService;
 
     //	@Autowired
 //	private UserRepository userRepository;
@@ -110,7 +115,7 @@ public class TestScope {
 //
     @Test
     public void testRabbitMQ() throws Exception {
-        for (int i = 0; i < 10; i++) {  //发送一万条
+        for (int i = 0; i < 1; i++) {  //发送一万条
             rabbitMQService.sendMessage();
         }
         System.in.read();
@@ -147,6 +152,13 @@ public class TestScope {
     @ResubmitHandler
     public void aop() {
 
+    }
+
+    @Test
+    public void testJedis(){
+        jedisStringService.set("zjc", FastJsonUtils.toJson(new User("zjc",23)));
+        String s = jedisStringService.get("zjc");
+        System.out.println(s);
     }
 
 }

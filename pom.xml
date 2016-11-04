@@ -155,6 +155,12 @@
             <version>1.16.10</version>
         </dependency>
 
+        <!--spring-redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-redis</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
