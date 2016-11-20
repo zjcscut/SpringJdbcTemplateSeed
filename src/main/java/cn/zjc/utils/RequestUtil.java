@@ -5,6 +5,7 @@ package cn.zjc.utils;
  * @version 2016/6/15 12:21
  */
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +31,7 @@ public final class RequestUtil {
 		Assert.notNull(request, "Request must not be null");
 		Enumeration<String> paramNames = request.getParameterNames();
 		TreeMap<String, Object> params = new TreeMap<>();
-		if (excludePrefix == null || "".equals(excludePrefix)) {
+		if (StringUtils.isBlank(excludePrefix)) {
 			excludePrefix = "";
 		}
 		while (paramNames != null && paramNames.hasMoreElements()) {
@@ -146,7 +147,7 @@ public final class RequestUtil {
 	 * @param name
 	 * @return
 	 */
-	public static Object getSession(HttpServletRequest request, String name) {
+	public static Object getSessionVal(HttpServletRequest request, String name) {
 		return request.getSession().getAttribute(name);
 	}
 
@@ -157,7 +158,7 @@ public final class RequestUtil {
 	 * @param name
 	 * @param value
 	 */
-	public static void setSession(HttpServletRequest request, String name, Object value) {
+	public static void setSessionVal(HttpServletRequest request, String name, Object value) {
 		request.getSession().setAttribute(name, value);
 	}
 

@@ -84,8 +84,9 @@ public class UserController {
 
     @RequestMapping(value = "/user/json")
     @ResponseBody
-    public Object userJson(){
-
+    public Object userJson(@RequestParam(value = "id")Integer id,
+						   @RequestParam(value = "name")String name){
+         logger.error("接收到Http请求的内容==> id :" + id + "; name :" + name );
         return new User("zjc",23);
     }
 

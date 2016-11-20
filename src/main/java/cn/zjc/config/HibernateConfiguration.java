@@ -2,6 +2,7 @@ package cn.zjc.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -39,6 +40,7 @@ public class HibernateConfiguration {
 
 	//Hibernate事务管理器
 	@Bean
+//	@ConditionalOnProperty(prefix = "org.hiberante.enableTrans", havingValue = "true")
 	public HibernateTransactionManager transactionManager(DynamicDataSource dynamicDataSource) {
 		HibernateTransactionManager transactionManager = new HibernateTransactionManager();
 		transactionManager.setSessionFactory(sessionFactory(dynamicDataSource).getObject());
