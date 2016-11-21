@@ -1,0 +1,14 @@
+[
+  {
+    "exchangeName": "exchange1",
+    "exchangeType": "default",
+    "queueName": "queue1",
+    "routingKey": "key1"
+  },
+  {
+    "exchangeName": "exchange2",
+    "exchangeType": "headers",
+    "queueName": "queue2",
+    "routingKey": "key2"
+  }
+]
